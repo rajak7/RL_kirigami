@@ -71,28 +71,70 @@ class generate_state():
         return k_structure
 
     #only for 4 cut system
-    def generate_all_states(self,tot_states=100):
+    def generate_all_states_4cut(self,tot_states=100):
         count=0
         train_XX = []
+        cut_id = []
         for ii in range(self.n_actions):
             y1 = 0.5*self.del_cy
             for jj in range(self.n_actions):
-                y2 = 1.5*self.del_cy
+                y2 = y1 + self.del_cy
                 for kk in range(self.n_actions):
-                    y3 = 2.5*self.del_cy
+                    y3 = y2 + self.del_cy
                     for ll in range(self.n_actions):
-                        if count >= tot_states: break
+                        y4 = y3 + self.del_cy
+                        if tot_states!= None and count >= tot_states: break
                         count += 1
-                        y4 = 3.5*self.del_cy
                         new_state = np.zeros((2,self.ngrids,self.ngrids),dtype=float)
                         self.generate_struct(y1,ii,new_state)  # first layer
                         self.generate_struct(y2,jj,new_state)  # second layer
                         self.generate_struct(y3,kk,new_state)  # third layer
                         self.generate_struct(y4,ll,new_state)  # fourth layer
-                        train_XX.append(new_state)
-                        print("created: ",count,tot_states)
+                        k_structure = new_state[0,:,:]
+                        k_structure = np.expand_dims(k_structure,axis = 0)
+                        train_XX.append(k_structure)
+                        cut_id.append([ii,jj,kk,ll])
+                        if count % 100 == 0:
+                            print("created: ",count)
         train_XX = np.asarray(train_XX)
-        return train_XX
+        cut_id = np.asarray(cut_id)
+        return train_XX,cut_id
+    
+    #create entire state space for n cut system
+    def generate_all_states_6cut(self,tot_states=100):
+        count=0
+        train_XX = []
+        cut_id = []
+        for ii in range(self.n_actions):
+            y1 = 0.5*self.del_cy
+            for jj in range(self.n_actions):
+                y2 = y1 + self.del_cy
+                for kk in range(self.n_actions):
+                    y3 = y2 + self.del_cy
+                    for ll in range(self.n_actions):
+                        y4 = y3 + self.del_cy
+                        for mm in range(self.n_actions):
+                            y5 = y4 + self.del_cy
+                            for nn in range(self.n_actions):
+                                y6 = y5 + self.del_cy
+                                if tot_states!= None and count >= tot_states: break
+                                count += 1
+                                new_state = np.zeros((2,self.ngrids,self.ngrids),dtype=float)
+                                self.generate_struct(y1,ii,new_state)  # first layer
+                                self.generate_struct(y2,jj,new_state)  # second layer
+                                self.generate_struct(y3,kk,new_state)  # third layer
+                                self.generate_struct(y4,ll,new_state)  # fourth layer
+                                self.generate_struct(y5,ll,new_state)  # fifth layer
+                                self.generate_struct(y6,ll,new_state)  # sixth layer
+                                k_structure = new_state[0,:,:]
+                                k_structure = np.expand_dims(k_structure,axis = 0)
+                                train_XX.append(k_structure)
+                                cut_id.append([ii,jj,kk,ll,mm,nn])
+                                if count % 1000 == 0:
+                                    print("created: ",count)
+        train_XX = np.asarray(train_XX)
+        cut_id = np.asarray(cut_id)
+        return train_XX,cut_id
 
     def cal_flag(self,x_pos,y_pos,yloc,action_num):
         if self.action[action_num][2] < self.Lx:      #end location of cut is within the box

@@ -31,7 +31,10 @@ if args.train == True:
         r_buffer = ReplayMemory(args.buff_size)
         rl_model = dqn_model(policy_net,target_net,r_buffer,len(total_action),args)
     if args.resume == True:
-        r_buffer = None
+        if args.resume_buffer:
+            r_buffer = None
+        else:
+            r_buffer = ReplayMemory(args.buff_size)
         rl_model = dqn_model(policy_net,target_net,r_buffer,len(total_action),args)
         previous  = os.path.join(args.model_name,'previous')
         epoch = load_dqn_model(rl_model,previous)

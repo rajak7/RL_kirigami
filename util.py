@@ -27,7 +27,8 @@ def load_dqn_model(rl_model,model_name,strict=True,device=None):
     rl_model.policy_net.load_state_dict(ckpt['policy_net'],strict=strict)
     rl_model.target_net.load_state_dict(ckpt['target_net'],strict=strict)
     rl_model.eps_threshold = ckpt['eps_threshold']
-    rl_model.memory = ckpt['replay_memory']
+    if args.resume_buffer:
+        rl_model.memory = ckpt['replay_memory']
     return epoch
 
 #sample structure using an RL agent
