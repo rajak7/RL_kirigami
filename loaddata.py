@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from model.environment import generate_state
+from torch.utils import data
 
 def read_input(file1,file2,ncopy=1):
     train_XX=np.load(file1)
@@ -79,3 +80,18 @@ def create_krigami_binary_map(filename,s_info):
             structure_all.append(X2[0])
     print("total number of structure: ",count)
     return cut_id_all,cut_action_all,structure_all
+
+#create queantity of each pahse in the structure 
+class Kirigami_Dataset(data.Dataset):
+    def __init__(self,structure,strain):
+        n_data = structure.size(0)   
+        self.structure = structure
+        self.strain =strain
+
+    def __len__(self):
+        return self.structure.size(0)
+
+    def __getitem__(self, index):
+        X_ = self.structure[index]  
+        C_ = self.strain[index]     
+        return {'structure':X_,'strain':C_}

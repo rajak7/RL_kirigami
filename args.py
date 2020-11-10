@@ -49,6 +49,15 @@ def add_args(parser):
                         help='update DQN traget')
     parser.add_argument('--learning_rate',type=float,default=0.0005,
                         help='learning_rate for DQN')
+    #CVAE Parameters
+    parser.add_argument('--z_dim',type=int,default=10,help='latent dimension')
+    parser.add_argument('--ncvae_train',type=int,default=6400,help='total training examples used in CVAE')
+    parser.add_argument('--dataset',type=str,default='dataset/4cut_allstate.npy',help='entire dataset of n-cut')
+    parser.add_argument('--dataset_loc',type=str,default='dataset/4cut_location.npy',help='entire dataset of n-cut location')
+    parser.add_argument('--num_epoch',type=int,default=300,
+                        help='total number of training epochs')
+    #Active Learning
+    parser.add_argument('--nsearch',type=int,default=2,help='number of active learning search')
 
     return parser
     

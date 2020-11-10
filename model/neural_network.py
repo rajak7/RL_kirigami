@@ -116,7 +116,6 @@ class reward_model():
         with torch.no_grad():
             y_predicted = self.nn_model.forward(X_data)
         return y_predicted
-        return 0
 
 
     

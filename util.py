@@ -31,6 +31,13 @@ def load_dqn_model(rl_model,model_name,strict=True,device=None):
         rl_model.memory = ckpt['replay_memory']
     return epoch
 
+#save stress-strain/CVAE model (works for a single standalone NN model)
+def save_model(model,path):
+    torch.save(model.state_dict(),path)
+
+def load_model(model,path,strict=True,device=None):
+    model.load_state_dict(torch.load(path,map_location=device),strict=strict)
+
 #sample structure using an RL agent
 def sample_structure(env,rl_model,seq_len,total_action,cur_step=10000,first_cur_random=True,first_cur_fixed=None):
     cur_state = env.init_observation(S0=True)
