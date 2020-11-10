@@ -124,16 +124,28 @@ class generate_state():
                                 self.generate_struct(y2,jj,new_state)  # second layer
                                 self.generate_struct(y3,kk,new_state)  # third layer
                                 self.generate_struct(y4,ll,new_state)  # fourth layer
-                                self.generate_struct(y5,ll,new_state)  # fifth layer
-                                self.generate_struct(y6,ll,new_state)  # sixth layer
+                                self.generate_struct(y5,mm,new_state)  # fifth layer
+                                self.generate_struct(y6,nn,new_state)  # sixth layer
                                 k_structure = new_state[0,:,:]
                                 k_structure = np.expand_dims(k_structure,axis = 0)
                                 train_XX.append(k_structure)
                                 cut_id.append([ii,jj,kk,ll,mm,nn])
                                 if count % 1000 == 0:
                                     print("created: ",count)
+                                if count % 100000 == 0 and count > 0:
+                                   print("saving file at",count)
+                                   train_XX = np.asarray(train_XX)
+                                   cut_id = np.asarray(cut_id)
+                                   np.save('dataset/6cut_allstate_'+str(count),train_XX)
+                                   np.save('dataset/6cut_location_'+str(count),cut_id)
+                                   del train_XX 
+                                   del cut_id
+                                   train_XX = []
+                                   cut_id = []
         train_XX = np.asarray(train_XX)
         cut_id = np.asarray(cut_id)
+        np.save('dataset/6cut_allstate_'+str(count),train_XX)
+        np.save('dataset/6cut_location_'+str(count),cut_id)
         return train_XX,cut_id
 
     def cal_flag(self,x_pos,y_pos,yloc,action_num):
