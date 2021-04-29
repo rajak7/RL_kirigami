@@ -4,6 +4,8 @@ import numpy as np
 import math
 import random
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 #save DQN models
 def save_dqn_model(rl_model,epoch,model_name):
     save_dir = os.path.join('checkpoints',model_name)
@@ -35,7 +37,7 @@ def load_dqn_model(rl_model,model_name,strict=True,device=None):
 def save_model(model,path):
     torch.save(model.state_dict(),path)
 
-def load_model(model,path,strict=True,device=None):
+def load_model(model,path,strict=True,device=device):
     model.load_state_dict(torch.load(path,map_location=device),strict=strict)
 
 #sample structure using an RL agent
