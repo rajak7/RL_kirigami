@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 bce = torch.nn.BCEWithLogitsLoss(reduction='none')
 
 class encoder(nn.Module):
@@ -95,6 +97,7 @@ class CVAE(nn.Module):
 #helper functions
 def sample_gaussian(m, v):
     epsilon = torch.normal(torch.zeros(m.size()),torch.ones(m.size()))
+    epsilon = epsilon.to(device)
     z = m + torch.sqrt(v) * epsilon
     return z
 
