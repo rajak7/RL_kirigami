@@ -1,0 +1,9 @@
+Information about the kirigami structures and the computed failure point from MD simulation
+
+n = 6
+n_6_training_data_structure_info.txt : contains information about the location of six cut in a kirigami structure
+n_6_structure_MD_strain_stress_info.txt: contains information realted to the failure length and failure stress of the system
+
+n = 4
+n_4_training_data_structure_info.txt : contains information about the location of four cut in a kirigami structure
+n_4_structure_MD_strain_stress_info.txt: contains information realted to the failure length and failure stress of the system
